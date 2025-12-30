@@ -11,7 +11,7 @@ const navItems = [
 ];
 
 const socialLinks = [
-  { href: '#', label: 'Instagram', icon: Instagram },
+  { href: 'https://instagram.com/arq.alejandrosantanatoglia', label: 'Instagram', icon: Instagram },
   { href: '#', label: 'LinkedIn', icon: Linkedin },
 ];
 
@@ -54,7 +54,7 @@ export const Navigation = () => {
       {/* Mobile menu button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-6 right-6 z-50 md:hidden p-2 text-charcoal hover:text-brass transition-colors"
+        className="fixed top-6 right-6 z-50 md:hidden p-2 text-charcoal hover:text-brass transition-colors cursor-pointer"
         aria-label="Toggle menu"
         aria-expanded={isOpen}
       >
@@ -84,7 +84,7 @@ export const Navigation = () => {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className="group relative"
+                className="group relative cursor-pointer"
                 aria-label={item.label}
               >
                 <motion.div
@@ -132,7 +132,7 @@ export const Navigation = () => {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: (navItems.length + index) * 0.1, duration: 0.4 }}
-                className="text-charcoal/60 hover:text-brass transition-colors"
+                className="text-charcoal/60 hover:text-brass transition-colors cursor-pointer"
                 aria-label={social.label}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
@@ -174,7 +174,7 @@ export const Navigation = () => {
                     >
                       <button
                         onClick={() => scrollToSection(item.id)}
-                        className={`block text-2xl font-serif ${
+                        className={`block text-2xl font-serif cursor-pointer ${
                           isActive ? 'text-brass' : 'text-charcoal'
                         } hover:text-brass transition-colors`}
                       >
@@ -200,7 +200,7 @@ export const Navigation = () => {
                           href={social.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-2 text-charcoal/60 hover:text-brass transition-colors"
+                          className="flex items-center gap-2 text-charcoal/60 hover:text-brass transition-colors cursor-pointer"
                           aria-label={social.label}
                         >
                           <IconComponent size={18} strokeWidth={1.5} />

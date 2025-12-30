@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 interface BeforeAfterProps {
   beforeImage: string;
   afterImage: string;
+  afterImage2?: string;
   beforeLabel?: string;
   afterLabel?: string;
   className?: string;
@@ -12,6 +13,7 @@ interface BeforeAfterProps {
 export const BeforeAfter = ({
   beforeImage,
   afterImage,
+  afterImage2,
   beforeLabel = 'Antes',
   afterLabel = 'Después',
   className = '',
@@ -22,8 +24,9 @@ export const BeforeAfter = ({
   const beforeImageRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
   const animationFrameRef = useRef<number | null>(null);
+  const isTouchRef = useRef(false);
 
-  const updateSliderPosition = useCallback((clientX: number) => {
+  const updateSliderPosition = useCallback((clientX: number, immediate = false) => {
     if (!containerRef.current) return;
 
     const rect = containerRef.current.getBoundingClientRect();
@@ -42,14 +45,14 @@ export const BeforeAfter = ({
   }, []);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
-    if (!isDragging) return;
+    if (!isDragging || isTouchRef.current) return;
     
     // Cancelar frame anterior si existe
     if (animationFrameRef.current) {
       cancelAnimationFrame(animationFrameRef.current);
     }
     
-    // Usar requestAnimationFrame para suavidad
+    // Usar requestAnimationFrame para suavidad en desktop
     animationFrameRef.current = requestAnimationFrame(() => {
       updateSliderPosition(e.clientX);
     });
@@ -57,33 +60,42 @@ export const BeforeAfter = ({
 
   const handleMouseDown = () => {
     setIsDragging(true);
+    isTouchRef.current = false;
   };
 
   const handleMouseUp = useCallback(() => {
     setIsDragging(false);
+    isTouchRef.current = false;
     if (animationFrameRef.current) {
       cancelAnimationFrame(animationFrameRef.current);
     }
   }, []);
 
-  const handleTouchStart = (e: React.TouchEvent) => {
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
     e.preventDefault();
+    isTouchRef.current = true;
+    setIsDragging(true);
     if (e.touches.length > 0) {
-      updateSliderPosition(e.touches[0].clientX);
+      // Actualización inmediata sin requestAnimationFrame para mobile
+      updateSliderPosition(e.touches[0].clientX, true);
     }
-  };
+  }, [updateSliderPosition]);
 
-  const handleTouchMove = (e: React.TouchEvent) => {
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
     e.preventDefault();
     if (e.touches.length > 0) {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-      animationFrameRef.current = requestAnimationFrame(() => {
-        updateSliderPosition(e.touches[0].clientX);
-      });
+      // Actualización inmediata sin requestAnimationFrame para mejor respuesta en mobile
+      updateSliderPosition(e.touches[0].clientX, true);
     }
-  };
+  }, [updateSliderPosition]);
+
+  const handleTouchEnd = useCallback(() => {
+    setIsDragging(false);
+    isTouchRef.current = false;
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+    }
+  }, []);
 
   useEffect(() => {
     if (isDragging) {
@@ -111,13 +123,15 @@ export const BeforeAfter = ({
         className="relative w-full aspect-[4/3] overflow-hidden rounded-lg shadow-lg touch-none"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onTouchCancel={handleTouchEnd}
       >
         {/* Imagen "Después" (fondo completo) */}
         <div className="absolute inset-0">
           <img
             src={afterImage}
             alt={afterLabel}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
             draggable={false}
           />
         </div>
@@ -139,7 +153,7 @@ export const BeforeAfter = ({
         {/* Barra del slider */}
         <div
           ref={sliderRef}
-          className={`absolute top-0 bottom-0 w-1 bg-charcoal/80 cursor-grab active:cursor-grabbing z-10 will-change-[left] ${
+          className={`absolute top-0 bottom-0 w-1 bg-charcoal/80 cursor-grab active:cursor-grabbing z-10 will-change-[left,transform] ${
             isDragging ? '' : 'transition-all duration-150'
           }`}
           style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
