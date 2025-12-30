@@ -83,7 +83,7 @@ export const BeforeAfter = ({
     e.preventDefault();
     if (e.touches.length > 0) {
       // Actualización inmediata sin requestAnimationFrame para mejor respuesta en mobile
-      updateSliderPosition(e.touches[0].clientX, true);
+      updateSliderPosition(e.touches[0].clientX);
     }
   }, [updateSliderPosition]);
 
