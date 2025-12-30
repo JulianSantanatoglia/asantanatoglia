@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 interface BeforeAfterProps {
   beforeImage: string;
   afterImage: string;
-  afterImage2?: string;
   beforeLabel?: string;
   afterLabel?: string;
   className?: string;
@@ -13,7 +12,6 @@ interface BeforeAfterProps {
 export const BeforeAfter = ({
   beforeImage,
   afterImage,
-  afterImage2,
   beforeLabel = 'Antes',
   afterLabel = 'Después',
   className = '',
@@ -26,7 +24,7 @@ export const BeforeAfter = ({
   const animationFrameRef = useRef<number | null>(null);
   const isTouchRef = useRef(false);
 
-  const updateSliderPosition = useCallback((clientX: number, immediate = false) => {
+  const updateSliderPosition = useCallback((clientX: number) => {
     if (!containerRef.current) return;
 
     const rect = containerRef.current.getBoundingClientRect();
@@ -77,7 +75,7 @@ export const BeforeAfter = ({
     setIsDragging(true);
     if (e.touches.length > 0) {
       // Actualización inmediata sin requestAnimationFrame para mobile
-      updateSliderPosition(e.touches[0].clientX, true);
+      updateSliderPosition(e.touches[0].clientX);
     }
   }, [updateSliderPosition]);
 

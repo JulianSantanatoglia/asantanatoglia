@@ -7,7 +7,7 @@ import { FloatingContact } from '../components/FloatingContact';
 import { ProjectModal } from '../components/ProjectModal';
 import { BeforeAfter } from '../components/BeforeAfter';
 import { Footer } from '../components/Footer';
-import { Award, MapPin, Calendar, Square, ArrowRight, CheckCircle2, Mail, Phone, MapPin as MapPinIcon, Coffee, Sparkles, Ruler, FolderKanban, Building2, Briefcase, Send } from 'lucide-react';
+import { Award, MapPin, Calendar, Square, ArrowRight, CheckCircle2, Mail, Phone, MapPin as MapPinIcon, Coffee, Sparkles, Ruler, FolderKanban, Building2, Send } from 'lucide-react';
 
 const insights = [
   { value: '12+', label: 'Años de experiencia', icon: Award },
