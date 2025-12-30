@@ -1,0 +1,100 @@
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* Paleta arquitectónica - TailwindCSS v4 genera automáticamente bg-*, text-*, etc. */
+  --color-warm-white: #FAF8F5;
+  --color-broken-white: #F5F3F0;
+  --color-warm-gray: #E8E6E1;
+  --color-charcoal: #2C2C2C;
+  --color-cement: #C8C5BE;
+  --color-brass: #B8A082;
+  --color-mineral-green: #7A8B7A;
+
+  /* Fuentes - se convierten en font-serif, font-sans, etc. */
+  --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-handwritten: 'Brush Script MT', cursive;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-warm-white);
+    color: var(--color-charcoal);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+  }
+}
+
+@layer utilities {
+  .pattern-grid {
+    background-image: 
+      linear-gradient(rgba(44, 44, 44, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(44, 44, 44, 0.02) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .pattern-lines {
+    background-image: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 1px,
+      rgba(44, 44, 44, 0.015) 1px,
+      rgba(44, 44, 44, 0.015) 2px
+    );
+  }
+
+  .pattern-blueprint {
+    background-image: 
+      linear-gradient(rgba(44, 44, 44, 0.01) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(44, 44, 44, 0.01) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .magnetic-hover {
+    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .magnetic-hover:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #FAF8F5;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #C8C5BE;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #2C2C2C;
+}
+
+/* Focus states for accessibility */
+*:focus-visible {
+  outline: 2px solid #B8A082;
+  outline-offset: 2px;
+}
